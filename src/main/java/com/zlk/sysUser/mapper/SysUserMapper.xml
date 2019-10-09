@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlk.sysUser.mapper.SysUserMapper">
+
+    <resultMap id="sysUserEntityMap" type="com.zlk.sysUser.entity.SysUser">
+        <id property="userId" column="user_id" javaType="java.lang.String"></id>
+        <result property="userName" column="user_name" javaType="java.lang.String"></result>
+        <result property="password" column="password" javaType="java.lang.String"></result>
+        <result property="phone" column="phone" javaType="java.lang.String"></result>
+        <result property="card" column="card" javaType="java.lang.String"></result>
+        <result property="province" column="province" javaType="java.lang.String"></result>
+        <result property="city" column="city" javaType="java.lang.String"></result>
+        <result property="area" column="area" javaType="java.lang.String"></result>
+        <result property="address" column="address" javaType="java.lang.String"></result>
+        <result property="createTime" column="create_time" javaType="java.util.Date"></result>
+        <result property="createUser" column="create_user" javaType="java.lang.String"></result>
+        <result property="updateTime" column="update_time" javaType="java.util.Date"></result>
+        <result property="updateUser" column="update_user" javaType="java.lang.String"></result>
+        <result property="status" column="status" javaType="java.lang.String"></result>
+    </resultMap>
+
+    <resultMap id="sysRoleEntityMap" type="com.zlk.sysUser.entity.SysRole">
+        <id property="roleId" column="role_id" javaType="java.lang.String"></id>
+        <result property="roleName" column="role_name" javaType="java.lang.String"></result>
+        <result property="roleCode" column="role_code" javaType="java.lang.String"></result>
+        <result property="createTime" column="create_time" javaType="java.util.Date"></result>
+        <result property="createUser" column="create_user" javaType="java.lang.String"></result>
+    </resultMap>
+
+    <select id="findSysUserOfNameByShiro" parameterType="com.zlk.sysUser.entity.SysUser" resultMap="sysUserEntityMap">
+        select * from sys_user
+        where user_name=#{userName}
+    </select>
+
+    <select id="findSysUserByNameAndPassword" parameterType="com.zlk.sysUser.entity.SysUser" resultMap="sysUserEntityMap">
+        select * from sys_user
+        where user_name=#{userName} and password=#{password}
+    </select>
+
+    <select id="findRoleNameByUserName" parameterType="com.zlk.sysUser.entity.SysRole" resultMap="sysRoleEntityMap">
+        select role_code from sys_user u, sys_role r, sys_user_role ur
+        where ur.user_id=u.user_id and ur.role_id=r.role_id and u.user_name=#{userName}
+    </select>
+
+    <select id="findSysUserByLimit" parameterType="com.zlk.sysUser.entity.Pagination" resultMap="sysUserEntityMap">
+        select u.*, r.role_name from sys_user u, sys_role r, sys_user_role ur
+        where ur.user_role_id=u.user_id and ur.user_role_id=r.role_id
+        limit #{startPage},#{limit}
+    </select>
+
+    <select id="findCountByUserId" parameterType="com.zlk.sysUser.entity.Pagination" resultType="java.lang.Integer">
+        select count(1) from sys_user
+    </select>
+</mapper>

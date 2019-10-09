@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlk.orders.mapper.OrdersMapper">
+
+    <resultMap id="ordersEntityMap" type="com.zlk.orders.entity.Orders">
+        <id property="orderId" column="or_id" javaType="java.lang.String"></id>
+        <result property="customName" column="or_cname" javaType="java.lang.String"></result>
+        <result property="productName" column="or_pname" javaType="java.lang.String"></result>
+        <result property="orderNumber" column="or_number" javaType="java.lang.String"></result>
+        <result property="orderPrice" column="or_price" javaType="java.lang.String"></result>
+        <result property="orderUnit" column="or_unit" javaType="java.lang.String"></result>
+        <result property="orderState" column="or_state" javaType="java.lang.String"></result>
+        <result property="orderBuyTime" column="or_buy_time" javaType="java.util.Date"></result>
+        <result property="orderRequireTime" column="or_require_time" javaType="java.util.Date"></result>
+        <result property="orderRequire" column="or_require" javaType="java.lang.String"></result>
+        <result property="orderImage" column="or_image" javaType="java.lang.String"></result>
+        <result property="orderFile" column="or_file" javaType="java.lang.String"></result>
+    </resultMap>
+
+    <select id="findOrdersByLimit" parameterType="com.zlk.orders.entity.Pagination" resultMap="ordersEntityMap">
+        select o.*, c.cus_name, p.pro_name from orders o, product p, customer c
+        where o.or_cname=c.cus_name and o.or_pname=p.pro_name
+        limit #{startPage},#{limit}
+    </select>
+
+    <select id="findCountByOrderId" parameterType="com.zlk.orders.entity.Pagination" resultType="java.lang.Integer">
+        select count(1) from orders
+    </select>
+
+    <delete id="deleteOrderByOrderId" parameterType="java.lang.String">
+        delete from orders where or_id=#{orderId}
+    </delete>
+
+    <insert id="insertOrder" parameterType="com.zlk.orders.entity.Orders">
+        insert into orders (or_id,or_cname,or_pname,or_number,or_price,or_unit,or_state,or_buy_time,or_require_time,or_require,or_image,or_file)
+        values (#{orderId},#{customName},#{productName},#{orderNumber},#{orderPrice},#{orderUnit},#{orderState},#{orderBuyTime},#{orderRequireTime},#{orderRequire},#{orderImage},#{orderFile})
+    </insert>
+
+    <update id="updateOrderByOrderId" parameterType="com.zlk.orders.entity.Orders">
+        update orders
+        set or_cname=#{customName},or_pname=#{productName},or_number=#{orderNumber},or_price=#{orderPrice},or_unit=#{orderUnit},or_state=#{orderState},or_buy_time=#{orderBuyTime},or_require_time=#{orderRequireTime},or_require=#{orderRequire},or_image=#{orderImage},or_file=#{orderFile}
+        where or_id=#{orderId}
+    </update>
+
+</mapper>

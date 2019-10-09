@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlk.orders.mapper.ProductMapper">
+
+    <resultMap id="productEntityMap" type="com.zlk.orders.entity.Product">
+        <id property="productId" column="pro_id" javaType="java.lang.Integer"></id>
+        <result property="productName" column="pro_name" javaType="java.lang.String"></result>
+        <result property="productKind" column="pro_kind" javaType="java.lang.String"></result>
+        <result property="productState" column="pro_state" javaType="java.lang.String"></result>
+        <result property="productIntroduce" column="pro_introduce" javaType="java.lang.String"></result>
+        <result property="productImageAp" column="pro_image_ap" javaType="java.lang.String"></result>
+        <result property="productImageVp" column="pro_image_vp" javaType="java.lang.String"></result>
+    </resultMap>
+
+    <select id="findProductByLimit" parameterType="com.zlk.orders.entity.Pagination" resultMap="productEntityMap">
+        select * from product limit #{startPage},#{limit}
+    </select>
+
+    <select id="findCountByProductId" parameterType="com.zlk.orders.entity.Pagination" resultType="java.lang.Integer">
+        select count(1) from product
+    </select>
+
+    <delete id="deleteProductByProductId" parameterType="java.lang.Integer">
+        delete from product where pro_id=#{productId}
+    </delete>
+
+    <insert id="insertProduct" parameterType="com.zlk.orders.entity.Product">
+        insert into product (pro_name,pro_kind,pro_state,pro_introduce,pro_image_ap,pro_image_vp)
+        values (#{productName},#{productKind},#{productState},#{productIntroduce},#{productImageAp},#{productImageVp})
+    </insert>
+
+    <update id="updateProductByProductId" parameterType="com.zlk.orders.entity.Product">
+        update product
+        set pro_name=#{productName},pro_kind=#{productKind},pro_state=#{productState},pro_introduce=#{productIntroduce},pro_image_ap=#{productImageAp},pro_image_vp=#{productImageVp}
+        where pro_id=#{productId}
+    </update>
+
+    <update id="updateProOfTextAreaByProId" parameterType="com.zlk.orders.entity.Product">
+        update product
+        set pro_introduce=#{productIntroduce}
+        where pro_id=#{productId}
+    </update>
+
+</mapper>

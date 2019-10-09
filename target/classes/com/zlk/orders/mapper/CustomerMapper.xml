@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlk.orders.mapper.CustomerMapper">
+
+    <resultMap id="customerEntityMap" type="com.zlk.orders.entity.Customer">
+        <id property="customId" column="cus_id" javaType="java.lang.String"></id>
+        <result property="customName" column="cus_name" javaType="java.lang.String"></result>
+        <result property="customCompany" column="cus_company" javaType="java.lang.String"></result>
+        <result property="customAddress" column="cus_address" javaType="java.lang.String"></result>
+        <result property="customFax" column="cus_fax" javaType="java.lang.String"></result>
+        <result property="customEmail" column="cus_email" javaType="java.lang.String"></result>
+        <result property="customManager" column="cus_manager" javaType="java.lang.String"></result>
+        <result property="customPhone" column="cus_phone" javaType="java.lang.String"></result>
+        <result property="customState" column="cus_state" javaType="java.lang.String"></result>
+        <result property="customComment" column="cus_comment" javaType="java.lang.String"></result>
+    </resultMap>
+    
+    <select id="findCustomerByLimit" parameterType="com.zlk.orders.entity.Pagination" resultMap="customerEntityMap">
+        select * from customer limit #{startPage},#{limit}
+    </select>
+
+    <select id="findCountByCustomId" parameterType="com.zlk.orders.entity.Pagination" resultType="java.lang.Integer">
+        select count(1) from customer
+    </select>
+
+    <delete id="deleteCustomerByCustomId" parameterType="java.lang.String">
+        delete from customer where cus_id=#{customId}
+    </delete>
+
+    <insert id="insertCustomer" parameterType="com.zlk.orders.entity.Customer">
+        insert into customer (cus_id,cus_name,cus_company,cus_address,cus_fax,cus_email,cus_manager,cus_phone,cus_state,cus_comment)
+        values (#{customId},#{customName},#{customCompany},#{customAddress},#{customFax},#{customEmail},#{customManager},#{customPhone},#{customState},#{customComment})
+    </insert>
+
+    <update id="updateCustomerByCustomId" parameterType="com.zlk.orders.entity.Customer">
+        update customer
+        set cus_name=#{customName},cus_company=#{customCompany},cus_address=#{customAddress},cus_fax=#{customFax},cus_email=#{customEmail},cus_manager=#{customManager},cus_phone=#{customPhone},cus_state=#{customState},cus_comment=#{customComment}
+        where cus_id=#{customId}
+    </update>
+
+</mapper>
